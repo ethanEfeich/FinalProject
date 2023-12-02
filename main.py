@@ -1,5 +1,5 @@
 # Ethan Eichelberger
-
+import pygame.image
 
 # Requirements
 # ground plane with appropriate ground texture, NOT A SINGLE FLAT COLOR, grass dirt etc
@@ -55,14 +55,16 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
+import image
 
 camerax = -1.0
 lookx = 0.0
 
 
 def init():
-   glClearColor (0.0, 0.0, 0.0, 0.0)
-   glShadeModel (GL_FLAT)
+    glClearColor(0.0, 0.0, 0.0, 0.0)
+    glShadeModel(GL_FLAT)
+
 
 def draw_house():
 
@@ -75,6 +77,7 @@ def draw_house():
     draw_roofend1()
     draw_roofend2()
 
+
 def draw_backwall():
     glPushMatrix()
     glColor3f(0.0, 0.7, 0.7)
@@ -82,6 +85,7 @@ def draw_backwall():
     glTranslatef(0.0, 0.0, -0.1)
     draw_frontwall()
     glPopMatrix()
+
 
 def draw_frontwall():
     glPushMatrix()
@@ -93,6 +97,7 @@ def draw_frontwall():
     glVertex3f(-1.0, 1.0, 0.0)
     glEnd()
     glPopMatrix()
+
 
 def draw_backwall2():
 
@@ -106,6 +111,7 @@ def draw_backwall2():
     glEnd()
     glPopMatrix()
 
+
 def draw_sidewall1():
     glPushMatrix()
 
@@ -117,6 +123,7 @@ def draw_sidewall1():
     glVertex3f(1.0, 1.0, 0.0)
     glEnd()
     glPopMatrix()
+
 
 def draw_sidewall2():
     glPushMatrix()
@@ -130,7 +137,9 @@ def draw_sidewall2():
     glEnd()
     glPopMatrix()
 
+
 def draw_roofside1():
+
     glPushMatrix()
     glColor3f(0.82, 0.4, 0.1)
     glBegin(GL_POLYGON)
@@ -140,6 +149,7 @@ def draw_roofside1():
     glVertex3f(-1.0, 1.5, -0.5)
     glEnd()
     glPopMatrix()
+
 
 def draw_roofside2():
     glPushMatrix()
@@ -163,6 +173,7 @@ def draw_roofend2():
     glEnd()
     glPopMatrix()
 
+
 def draw_roofend1():
     glPushMatrix()
     glColor3f(0.82, 0.4, 0.1)
@@ -172,6 +183,7 @@ def draw_roofend1():
     glVertex3f(1.0, 1.5, -0.5)
     glEnd()
     glPopMatrix()
+
 
 def draw_rowofhouses():
     glPushMatrix()
@@ -184,12 +196,12 @@ def draw_rowofhouses():
 
 def draw_street():
     glPushMatrix()
-    glColor3f(0.0, 0.0, 0.0)
+    glColor3f(0.0, 0.0, 0.1)
     glBegin(GL_POLYGON)
-    glVertex3f(-20.0, 0.0, 3.0)
-    glVertex3f(20.0, 0.0, 3.0)
-    glVertex3f(20.0, 0.0, 1.0)
-    glVertex3f(-20.0, 0.0, 1.0)
+    glVertex3f(-20.0, 0.1, 3.0)
+    glVertex3f(20.0, 0.1, 3.0)
+    glVertex3f(20.0, 0.1, 1.0)
+    glVertex3f(-20.0, 0.1, 1.0)
     glEnd()
     glColor3f(0.5, 0.5, 0.5)
     glBegin(GL_POLYGON)
@@ -201,14 +213,21 @@ def draw_street():
     glPopMatrix()
 
 
-def draw_housesongreen():
+# draws the ground plane
+def draw_ground():
+    # #global grass_textureData
+    # grass_texture = pygame.image.load("grass20.png")
+    # grass_textureData = pygame.image.tostring(grass_texture, "RGBA", 1)
     glPushMatrix()
-
-    glBegin(GL_POLYGON)
+    glBegin(GL_QUADS)
     glColor3f(0.0, 0.4, 0.2)
+    glTexCoord2f(0.0, 0.0)
     glVertex3f(-20.0,0.0, 10.0)
+    glTexCoord2f(0.0, 1.0)
     glVertex3f(20.0, 0.0, 10.0)
+    glTexCoord2f(1.0, 1.0)
     glVertex3f(20.0, 0.0, -10.0)
+    glTexCoord2f(1.0, 0.0)
     glVertex3f(-20.0, 0.0, -10.0)
     glEnd()
     draw_street()
@@ -220,15 +239,13 @@ def draw_housesongreen():
 
 def display():
     global camerax, lookx
-
+    glEnable(GL_DEPTH_TEST)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
     gluLookAt(camerax, 5.0, 5.0, lookx, 0.0, 0.0, 0.0, 1.0, 0.0)
-#    draw_rowofhouses()
-    draw_housesongreen()
-#    draw_street()
+    draw_ground()
     glDepthFunc(GL_LESS)  # this is default
-    glEnable(GL_DEPTH_TEST)
+
     glFlush()
     glutSwapBuffers()
 
