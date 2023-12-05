@@ -197,7 +197,7 @@ def draw_rowofhouses():
 
 
 # draw the door, set rotation angle to a global variable to be toggled on keyboard
-# input
+# input need to add this to push
 def draw_door():
     global doorangle
     glPushMatrix()
