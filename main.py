@@ -59,6 +59,7 @@ import image
 
 camerax = -1.0
 lookx = 0.0
+doorangle = 0
 
 
 def init():
@@ -76,11 +77,12 @@ def draw_house():
     draw_roofside2()
     draw_roofend1()
     draw_roofend2()
+    draw_door()
 
 
 def draw_backwall():
     glPushMatrix()
-    glColor3f(0.0, 0.7, 0.7)
+    glColor3f(0.82, 0.7, 0.7)
     glRotatef(180, 0.0, 1.0, 0.0)
     glTranslatef(0.0, 0.0, -0.1)
     draw_frontwall()
@@ -102,7 +104,7 @@ def draw_frontwall():
 def draw_backwall2():
 
     glPushMatrix()
-    glColor3f(0.0, 0.7, 0.55)
+    glColor3f(0.82, 0.7, 0.55)
     glBegin(GL_QUADS)
     glVertex3f(-1.0, 0.0, -1.0)
     glVertex3f(1.0, 0.0, -1.0)
@@ -194,6 +196,24 @@ def draw_rowofhouses():
     glPopMatrix()
 
 
+# draw the door, set rotation angle to a global variable to be toggled on keyboard
+# input
+def draw_door():
+    global doorangle
+    glPushMatrix()
+    glColor3f(0.5, 0.5, 0.5)
+    glRotatef(doorangle, 0 , 0.1, 0.0)
+    glTranslatef(0.0, 0, .1)
+    glBegin(GL_QUADS)
+
+    glVertex3f(-0.2, .4, 0.0)
+    glVertex3f(0, 0.4, 0.0)
+    glVertex3f(0, 0, 0.0)
+    glVertex3f(-0.2, 0, 0.0)
+    glEnd()
+    glPopMatrix()
+
+
 def draw_street():
     glPushMatrix()
     glColor3f(0.0, 0.0, 0.1)
@@ -242,7 +262,7 @@ def display():
     glEnable(GL_DEPTH_TEST)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
-    gluLookAt(camerax, 5.0, 5.0, lookx, 0.0, 0.0, 0.0, 1.0, 0.0)
+    gluLookAt(camerax, 1.0, 5.0, lookx, 0.0, 0.0, 0.0, 1.0, 0.0)
     draw_ground()
     glDepthFunc(GL_LESS)  # this is default
 
@@ -252,14 +272,14 @@ def display():
 
 def reshape(w, h):
 
-   glMatrixMode(GL_PROJECTION)
-   glLoadIdentity()
-   gluPerspective(60.0, 1.0, 0.1, 50.0)
-   glMatrixMode(GL_MODELVIEW)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(60.0, 1.0, 0.1, 50.0)
+    glMatrixMode(GL_MODELVIEW)
 
 
 def orbit(key, x, y):
-    global camerax, lookx
+    global camerax, lookx, doorangle
     ch = key.decode("utf-8")
     if ch == 'l':
         camerax +=1
@@ -269,6 +289,14 @@ def orbit(key, x, y):
         lookx +=1
     if ch == "a":
         lookx -=1
+    if ch == 's':
+        if doorangle == 90:
+            doorangle = 0
+            #print("door angle changed")
+
+        else:
+            doorangle = 90
+            #print("door angle changed")
     glutPostRedisplay()
 
 
