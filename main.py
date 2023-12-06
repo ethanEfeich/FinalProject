@@ -58,7 +58,9 @@ from OpenGL.GLU import *
 import image
 
 camerax = -1.0
+cameraz = 5
 lookx = 0.0
+lookz = 0
 doorangle = 0
 sunstate = 1
 
@@ -304,9 +306,10 @@ def draw_tree():
 
 def draw_sky():
     glPushMatrix()
-    glBegin(GL_QUADS)
+
     glColor3f(0.529, 0.808, 0.922)
-    #glRotatef(10, 1, 0, 0)
+    glRotatef(-5, 1, 0, 0)
+    glBegin(GL_QUADS)
     glVertex3f(-100, 30, -25)
     glVertex3f(100, 30, -25)
     glVertex3f(100, 0, -25)
@@ -322,12 +325,12 @@ def draw_sky():
 
 
 def display():
-    global camerax, lookx
+    global camerax, cameraz, lookx, lookz
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_LIGHTING)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
-    gluLookAt(camerax, 1.0, 5.0, lookx, 0.0, 0.0, 0.0, 1.0, 0.0)
+    gluLookAt(camerax, 1.0, cameraz, lookx, 0.0, lookz , 0.0, 1.0, 0.0)
     draw_ground()
     draw_tree()
     draw_sky()
@@ -346,16 +349,26 @@ def reshape(w, h):
 
 
 def key_inputs(key, x, y):
-    global camerax, lookx, doorangle, sunstate
+    global camerax, cameraz, lookx, lookz, doorangle, sunstate
     ch = key.decode("utf-8")
     if ch == 'l':
-        camerax +=1
+        if camerax < 10:
+            camerax += 1
     if ch == 'r':
-        camerax -=1
+        if camerax > -10:
+            camerax -= 1
     if ch == "d":
-        lookx +=1
+        if lookx < 10:
+            lookx +=1
     if ch == "a":
-        lookx -=1
+        if lookx > -10:
+            lookx -=1
+    if ch == 'u':
+        cameraz -= 1
+        lookz -= 1
+    if ch == 'j':
+        cameraz += 1
+        lookz += 1
     if ch == 's':
         if doorangle == 90:
             doorangle = 0
