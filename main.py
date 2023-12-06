@@ -31,6 +31,11 @@ lookx = 0.0
 lookz = 0
 doorangle = 0
 sunstate = 1
+humanstate = 0
+humanpath = 0
+bodyangle = 90
+armangle = 0
+secondpath = -0.5
 
 
 def init():
@@ -215,9 +220,9 @@ def draw_rowofhouses():
     glTranslatef(3.0, 0.0, 0.0)
     draw_house((0.365,0.247,0.827), (0.902,0.902,0.98), False)
     glTranslatef(3.0, 0.0, 0.0)
-    draw_house((0.502,0.,0.125), (0.933,0.294,0.169),False)
+    draw_house((0.502,0.,0.125), (0.933,0.294,0.169),True)
     glTranslatef(3.0, 0.0, 0.0)
-    draw_house((0.,0.639,0.424), (0.376,0.51,0.714),True)
+    draw_house((0.,0.639,0.424), (0.376,0.51,0.714),False)
     glPopMatrix()
 
 
@@ -263,13 +268,13 @@ def draw_street():
     glVertex3f(20.0, 0.1, 1.0)
     glVertex3f(-20.0, 0.1, 1.0)
     glEnd()
-    glColor3f(0.5, 0.5, 0.5)
-    glBegin(GL_POLYGON)
-    glVertex3f(-20.0, 0.3, 2.2)
-    glVertex3f(20.0, 0.2, 2.0)
-    glVertex3f(20.0, 0.3, 2.0)
-    glVertex3f(-20, 0.2, 2.2)
-    glEnd()
+    # glColor3f(0.5, 0.5, 0.5)
+    # glBegin(GL_POLYGON)
+    # glVertex3f(-20.0, 0.3, 2.2)
+    # glVertex3f(20.0, 0.2, 2.0)
+    # glVertex3f(20.0, 0.3, 2.0)
+    # glVertex3f(-20, 0.2, 2.2)
+    # glEnd()
     glPopMatrix()
 
 
@@ -352,8 +357,6 @@ def draw_sky():
 
 
 def draw_tower_layer(color):
-    glPushMatrix()
-
     glBegin(GL_QUADS)
     glColor3fv(color)
     glVertex3f(0, 0 , 0)
@@ -376,7 +379,7 @@ def draw_tower_layer(color):
     glVertex3f(0, .5, -.5)
     glVertex3f(0, 0, -.5)
     glEnd()
-    glPopMatrix()
+
 
 def draw_tower():
     glPushMatrix()
@@ -403,6 +406,242 @@ def draw_tower():
     glPopMatrix()
 
 
+def draw_torso():
+    glColor3fv((0.376, 0.51, 0.714))
+    #glRotatef(bodyangle, 0, 1, 0)
+    glBegin(GL_QUADS)
+    glVertex3f(0, .2, 0)
+    glVertex3f(.1, .2, 0)
+    glVertex3f(.1, .35, 0)
+    glVertex3f(0, .35, 0)
+
+    glVertex3f(0, .2, .1)
+    glVertex3f(.1, .2, .1)
+    glVertex3f(.1, .35, 0.1)
+    glVertex3f(0, .35, 0.1)
+
+    glVertex3f(0, .2, 0)
+    glVertex3f(0, .2, .1)
+    glVertex3f(0, .35, 0.1)
+    glVertex3f(0, .35, 0)
+
+    glVertex3f(.1, .2, 0)
+    glVertex3f(.1, .2, .1)
+    glVertex3f(.1, .35, 0.1)
+    glVertex3f(.1, .35, 0)
+
+    glVertex3f(.1, .35, 0)
+    glVertex3f(.1, .35, 0.1)
+    glVertex3f(0, .35, 0.1)
+    glVertex3f(0, .35, 0)
+
+    glEnd()
+
+
+def draw_head():
+    glColor3fv((0.918,0.867,0.792))
+    glBegin(GL_QUADS)
+    glVertex3f(0, .35, 0)
+    glVertex3f(.1, .35, 0)
+    glVertex3f(.1, .45, 0)
+    glVertex3f(0, .45, 0)
+
+    glVertex3f(0, .35, .1)
+    glVertex3f(.1, .35, .1)
+    glVertex3f(.1, .45, .1)
+    glVertex3f(0, .45, .1)
+
+    glVertex3f(0, .35, 0)
+    glVertex3f(0, .35, .1)
+    glVertex3f(0, .45, .1)
+    glVertex3f(0, .45, 0)
+
+    glVertex3f(.1, .35, 0)
+    glVertex3f(.1, .35, .1)
+    glVertex3f(.1, .45, .1)
+    glVertex3f(.1, .45, 0)
+
+    glColor3fv((0.431,0.149,0.055))
+    glVertex3f(0, .45, .1)
+    glVertex3f(.1, .45, .1)
+    glVertex3f(.1, .45, 0)
+    glVertex3f(0, .45, 0)
+
+    glEnd()
+
+
+def draw_left_arm():
+    glColor3fv((0.376, 0.51, 0.714))
+    glBegin(GL_QUADS)
+    glVertex3f(-.05, .25, 0)
+    glVertex3f(0, .25, 0)
+    glVertex3f(0, .35, 0)
+    glVertex3f(-.05, .35, 0)
+
+    glVertex3f(-.05, .25, .1)
+    glVertex3f(0, .25, .1)
+    glVertex3f(0, .35, .1)
+    glVertex3f(-.05, .35, .1)
+
+    #glColor3f(1, 1, 1)
+    glVertex3f(-.05, .25, 0)
+    glVertex3f(-.05, .25, .1)
+    glVertex3f(-.05, .35, .1)
+    glVertex3f(-.05, .35, 0)
+
+    glVertex3f(0, .25, 0)
+    glVertex3f(0, .25, .1)
+    glVertex3f(0, .35, .1)
+    glVertex3f(0, .35, 0)
+
+    glVertex3f(-.05, .35, .1)
+    glVertex3f(-.05, .35, 0)
+    glVertex3f(0, .35, 0)
+    glVertex3f(0, .35, .1)
+
+    glEnd()
+
+def draw_right_arm():
+    global armangle
+    glPushMatrix()
+    glColor3fv((0.376, 0.51, 0.714))
+    glRotatef(armangle, 0.15, 0.35, 0.05)
+    glBegin(GL_QUADS)
+    glVertex3f(.1, .25, 0)
+    glVertex3f(.15, .25, 0)
+    glVertex3f(.15, .35, 0)
+    glVertex3f(.1, .35, 0)
+
+    glVertex3f(.1, .25, .1)
+    glVertex3f(.15, .25, .1)
+    glVertex3f(.15, .35, .1)
+    glVertex3f(.1, .35, .1)
+
+    # glColor3f(1, 1, 1)
+    glVertex3f(.1, .25, 0)
+    glVertex3f(.1, .25, .1)
+    glVertex3f(.1, .35, .1)
+    glVertex3f(.1, .35, 0)
+
+    glVertex3f(.15, .25, 0)
+    glVertex3f(.15, .25, .1)
+    glVertex3f(.15, .35, .1)
+    glVertex3f(.15, .35, 0)
+
+    glVertex3f(.1, .35, .1)
+    glVertex3f(.1, .35, 0)
+    glVertex3f(.15, .35, 0)
+    glVertex3f(.15, .35, .1)
+
+    glEnd()
+    glPopMatrix()
+
+def draw_right_arm2():
+    glPushMatrix()
+    glColor3fv((0.376, 0.51, 0.714))
+    glBegin(GL_QUADS)
+    glVertex3f(.1, .25, 0)
+    glVertex3f(.15, .25, 0)
+    glVertex3f(.15, .35, 0)
+    glVertex3f(.1, .35, 0)
+
+    glVertex3f(.1, .25, .1)
+    glVertex3f(.15, .25, .1)
+    glVertex3f(.15, .35, .1)
+    glVertex3f(.1, .35, .1)
+
+    # glColor3f(1, 1, 1)
+    glVertex3f(.1, .25, 0)
+    glVertex3f(.1, .25, .1)
+    glVertex3f(.1, .35, .1)
+    glVertex3f(.1, .35, 0)
+
+    glVertex3f(.15, .25, 0)
+    glVertex3f(.15, .25, .1)
+    glVertex3f(.15, .35, .1)
+    glVertex3f(.15, .35, 0)
+
+    glVertex3f(.1, .35, .1)
+    glVertex3f(.1, .35, 0)
+    glVertex3f(.15, .35, 0)
+    glVertex3f(.15, .35, .1)
+
+    glEnd()
+    glPopMatrix()
+
+
+def draw_left_leg():
+    glColor3fv((0.,0.,0.545))
+    glBegin(GL_QUADS)
+    #
+    glVertex3f(0, 0, 0)
+    glVertex3f(.05, 0, 0)
+    glVertex3f(.05, .2, 0)
+    glVertex3f(0, .2, 0)
+
+    glVertex3f(0, 0, .1)
+    glVertex3f(.05, 0, .1)
+    glVertex3f(.05, .2, 0.1)
+    glVertex3f(0, .2, 0.1)
+
+    glVertex3f(0, 0, 0)
+    glVertex3f(0, 0, .1)
+    glVertex3f(0, .2, 0.1)
+    glVertex3f(0, .2, 0)
+
+    glVertex3f(.05, 0, 0)
+    glVertex3f(.05, 0, .1)
+    glVertex3f(.05, .2, 0.1)
+    glVertex3f(.05, .2, 0)
+
+    glVertex3f(.05, .2, 0)
+    glVertex3f(.05, .2, 0.1)
+    glVertex3f(0, .2, 0.1)
+    glVertex3f(0, .2, 0)
+
+    glVertex3f(.05, 0, 0)
+    glVertex3f(.05, 0, 0.1)
+    glVertex3f(0, 0, 0.1)
+    glVertex3f(0, 0, 0)
+
+    glEnd()
+def draw_right_leg():
+    glColor3fv((0., 0., 0.545))
+    glTranslate(.05, 0, 0)
+    draw_left_leg()
+def draw_human():
+    global humanpath, bodyangle, humanstate, bodyangle
+    glPushMatrix()
+    # will attach a global variable to translate human character in scene and rotate when ready
+    glTranslate(humanpath, .2, 2.0)
+    glRotatef(bodyangle, 0.00, 0.05, 0)
+
+    draw_torso()
+    draw_head()
+    draw_left_arm()
+    draw_right_arm()
+    draw_left_leg()
+    draw_right_leg()
+    glPopMatrix()
+
+
+def draw_second_human():
+    global secondpath
+    glPushMatrix()
+    # will attach a global variable to translate human character in scene and rotate when ready
+    glScale(.5, .5, .5)
+    glTranslate(1.7, 0, secondpath)
+    glRotatef(0, 0.00, 0.05, 0)
+
+    draw_torso()
+    draw_head()
+    draw_left_arm()
+    draw_right_arm2()
+    draw_left_leg()
+    draw_right_leg()
+    glPopMatrix()
+
+
 def display():
     global camerax, cameraz, lookx, lookz
     glEnable(GL_DEPTH_TEST)
@@ -414,6 +653,9 @@ def display():
     draw_tree()
     draw_sky()
     draw_tower()
+    draw_human()
+    draw_second_human()
+
     glDepthFunc(GL_LESS)  # this is default
 
     glFlush()
@@ -429,7 +671,7 @@ def reshape(w, h):
 
 
 def key_inputs(key, x, y):
-    global camerax, cameraz, lookx, lookz, doorangle, sunstate
+    global camerax, cameraz, lookx, lookz, doorangle, sunstate, humanstate, humanpath, bodyangle, armangle, secondpath
     ch = key.decode("utf-8")
     if ch == 'l':
         if camerax < 10:
@@ -457,6 +699,20 @@ def key_inputs(key, x, y):
         else:
             doorangle = 90
             #print("door angle changed")
+    # initiate human walk and wave sequence
+    if ch == 'p':
+        if humanpath > -1.00:
+            humanpath -= .02
+        elif humanpath <= -1.00:
+            if bodyangle < 180:
+                bodyangle += 5
+    if bodyangle == 180:
+        if armangle <= 120:
+            armangle += 10 % 6
+    # initiate movement of second character
+    if ch == 'i':
+        if secondpath < 1 and doorangle == 90:
+            secondpath += .03
     if ch == 'y':
         if sunstate == 1:
             sunstate = 0
