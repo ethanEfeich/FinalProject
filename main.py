@@ -3,7 +3,7 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-import image
+
 
 camerax = -1.0
 cameraz = 5
