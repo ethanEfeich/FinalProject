@@ -60,11 +60,22 @@ import image
 camerax = -1.0
 lookx = 0.0
 doorangle = 0
+sunstate = 1
 
 
 def init():
     glClearColor(0.0, 0.0, 0.0, 0.0)
     glShadeModel(GL_FLAT)
+    glEnable(GL_COLOR_MATERIAL)
+    init_light()
+
+
+def init_light():
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, [0.2, 0.2, 0.2, 1])
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1])
+    glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 1])
+    glEnable(GL_LIGHT0)
 
 
 def draw_house():
@@ -85,7 +96,6 @@ def draw_backwall():
     glColor3f(0.82, 0.7, 0.7)
     glRotatef(180, 0.0, 1.0, 0.0)
     glTranslatef(0.0, 0.0, -0.1)
-    draw_frontwall()
     glPopMatrix()
 
 
@@ -203,7 +213,7 @@ def draw_door():
     glPushMatrix()
     glColor3f(0.5, 0.5, 0.5)
     glRotatef(doorangle, 0 , 0.1, 0.0)
-    glTranslatef(0.0, 0, .1)
+    glTranslatef(0.0, 0, 0.0)
     glBegin(GL_QUADS)
 
     glVertex3f(-0.2, .4, 0.0)
@@ -241,14 +251,29 @@ def draw_ground():
     glPushMatrix()
     glBegin(GL_QUADS)
     glColor3f(0.0, 0.4, 0.2)
-    glTexCoord2f(0.0, 0.0)
+    #glTexCoord2f(0.0, 0.0)
     glVertex3f(-20.0,0.0, 10.0)
-    glTexCoord2f(0.0, 1.0)
+    #glTexCoord2f(0.0, 1.0)
     glVertex3f(20.0, 0.0, 10.0)
-    glTexCoord2f(1.0, 1.0)
+    #glTexCoord2f(1.0, 1.0)
     glVertex3f(20.0, 0.0, -10.0)
-    glTexCoord2f(1.0, 0.0)
     glVertex3f(-20.0, 0.0, -10.0)
+
+    # adding a slope
+    glVertex3f(20.0, 0.0, -10.0)
+    glVertex3f(20, 1, -20)
+    glVertex3f(-20, 1, -20)
+    glVertex3f(-20.0, 0.0, -10.0)
+    # slope to right of above slope
+    glVertex3f(20, 1, -20)
+    glVertex3f(30, 1, -20)
+    glVertex3f(30, 0, -10)
+    glVertex3f(20, 0, -10)
+
+
+
+    # glTexCoord2f(1.0, 0.0)
+    #glVertex3f()
     glEnd()
     draw_street()
     glTranslatef(-8.0, 0.0, 0.0)
@@ -257,13 +282,35 @@ def draw_ground():
     glPopMatrix()
 
 
+def draw_tree():
+    glPushMatrix()
+    #glBegin(GL_QUADS)
+    # drawing the stump
+    quad = gluNewQuadric()
+    glColor3f(0.545, 0.271, 0.075)
+    glRotatef(90, 1, 0, 0)
+    glTranslatef(2.5, -0.2, -.2)
+    gluCylinder(quad, .1, .1, .4, 16, 8)
+    #glEnd()
+    glPopMatrix()
+    # drawing the top of the tree
+    glPushMatrix()
+    glColor3f(0.035, 0.475, 0.412)
+    glRotatef(270, 1, 0, 0)
+    glTranslatef(2.5, 0.2, 0.2)
+    glutSolidCone(.3, 1, 9, 3)
+    glPopMatrix()
+
+
 def display():
     global camerax, lookx
     glEnable(GL_DEPTH_TEST)
+    glEnable(GL_LIGHTING)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
     gluLookAt(camerax, 1.0, 5.0, lookx, 0.0, 0.0, 0.0, 1.0, 0.0)
     draw_ground()
+    draw_tree()
     glDepthFunc(GL_LESS)  # this is default
 
     glFlush()
@@ -278,8 +325,8 @@ def reshape(w, h):
     glMatrixMode(GL_MODELVIEW)
 
 
-def orbit(key, x, y):
-    global camerax, lookx, doorangle
+def key_inputs(key, x, y):
+    global camerax, lookx, doorangle, sunstate
     ch = key.decode("utf-8")
     if ch == 'l':
         camerax +=1
@@ -297,6 +344,21 @@ def orbit(key, x, y):
         else:
             doorangle = 90
             #print("door angle changed")
+    if ch == 'y':
+        if sunstate == 1:
+            sunstate = 0
+            glDisable(GL_LIGHT0)
+            glLightfv(GL_LIGHT1, GL_AMBIENT, [0.0, 0.0, 0.0, 1])
+            glLightfv(GL_LIGHT1, GL_DIFFUSE, [0.0, 0.0, 0.0, 1])
+            glLightfv(GL_LIGHT1, GL_POSITION, [0, 2, 0, 1])
+            glEnable(GL_LIGHT1)
+        else:
+            sunstate = 1
+            glDisable(GL_LIGHT1)
+            glLightfv(GL_LIGHT0, GL_AMBIENT, [0.2, 0.2, 0.2, 1])
+            glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1])
+            glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 1])
+            glEnable(GL_LIGHT0)
     glutPostRedisplay()
 
 
@@ -305,10 +367,10 @@ def main():
     glutInitDisplayMode(GLUT_DOUBLE)
     glutInitWindowSize(1000, 900)
     glutInitWindowPosition(100, 100)
-    glutCreateWindow("A House")
+    glutCreateWindow("Ethan Eichelberger FinalProject")
     init()
     glutDisplayFunc(display)
-    glutKeyboardFunc(orbit)
+    glutKeyboardFunc(key_inputs)
     glutReshapeFunc(reshape)
     glutMainLoop()
 
