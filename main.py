@@ -96,6 +96,7 @@ def draw_backwall():
     glColor3f(0.82, 0.7, 0.7)
     glRotatef(180, 0.0, 1.0, 0.0)
     glTranslatef(0.0, 0.0, -0.1)
+    draw_frontwall()
     glPopMatrix()
 
 
@@ -301,6 +302,24 @@ def draw_tree():
     glutSolidCone(.3, 1, 9, 3)
     glPopMatrix()
 
+def draw_sky():
+    glPushMatrix()
+    glBegin(GL_QUADS)
+    glColor3f(0.529, 0.808, 0.922)
+    #glRotatef(10, 1, 0, 0)
+    glVertex3f(-100, 30, -25)
+    glVertex3f(100, 30, -25)
+    glVertex3f(100, 0, -25)
+    glVertex3f(-100, 0, -25)
+
+    # glColor3f(0.529, 0.808, 0.922)
+    # glVertex3f(50, 30, -25)
+    # glVertex3f(50, 0, -25)
+    # glVertex3f(50, 0, 25)
+    # glVertex3f(50, 30, 25)
+    glEnd()
+    glPopMatrix()
+
 
 def display():
     global camerax, lookx
@@ -311,6 +330,7 @@ def display():
     gluLookAt(camerax, 1.0, 5.0, lookx, 0.0, 0.0, 0.0, 1.0, 0.0)
     draw_ground()
     draw_tree()
+    draw_sky()
     glDepthFunc(GL_LESS)  # this is default
 
     glFlush()
@@ -321,7 +341,7 @@ def reshape(w, h):
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluPerspective(60.0, 1.0, 0.1, 50.0)
+    gluPerspective(60.0, 1.0, 0.1, 100.0)
     glMatrixMode(GL_MODELVIEW)
 
 
