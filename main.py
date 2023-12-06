@@ -257,6 +257,7 @@ def draw_door():
     glEnd()
     glPopMatrix()
 
+
 def draw_street():
     glPushMatrix()
     glColor3f(0.0, 0.0, 0.1)
@@ -354,6 +355,18 @@ def draw_sky():
     glPopMatrix()
 
 
+
+def draw_tower():
+    glPushMatrix()
+    glTranslate(15, 0, 0)
+    glBegin(GL_QUADS)
+    # let's try alternating layers of red and white for basic tower
+    # red
+    glColor3f(0.863,0.078,0.235)
+    #white
+    glColor3f(1, 1, 1)
+    glEnd()
+    glPopMatrix()
 def display():
     global camerax, cameraz, lookx, lookz
     glEnable(GL_DEPTH_TEST)
@@ -364,6 +377,7 @@ def display():
     draw_ground()
     draw_tree()
     draw_sky()
+    # draw_tower()
     glDepthFunc(GL_LESS)  # this is default
 
     glFlush()
