@@ -15,32 +15,16 @@ import pygame.image
 # The one dwelling structures (houses)  must have a door. On at least one house (or similar building) the user must be
 # able to toggle open and close the door
 #
-# The scene must be initially set in the daytime. At some point in the running of the application it should turn to
-# night under user control.  This should result in low light conditions.  When night falls in the scene at least some
+# When night falls in the scene at least some
 # of the habitable structures must have interior lighting and this must be visible in the application. And the user must
 # be able to return the scene to daylight conditions
 #
-# The scene should have some vegetation in it (at least one tree, can have many)
 #
 # The sides of the structures must be distinguishable. That is, they may be different colors or different shades of
 # colors, or you may apply textures to create this effect.
 #
 # The structures should not all be the same size. Although a collection of houses can be the same size but must vary in
 # other ways.
-#
-# The scene must include light from the sun.  This should cast shadows of objects. It is not necessary to see the sun
-# in the scene, only the lighting effects of the sun.
-#
-# During some portion of the application the viewer (camera) position must change under user control.  For example,
-# panning to scan the scene. Also the user must be able to move the camera (referred to as tracking) across the scene
-# (a view as if walking down the street).
-#
-# The view of the scene must be in perspective mode.
-#
-# The initial camera position should be  across from and looking at the constructed structures (houses).  It should be
-# slightly above the street level, as if it is at eye level for a first-person viewer. An acceptable alternative is to
-# place the camera in a slight aerial position as if looking down on the scene (but not straight down) from a slight
-# elevation.
 #
 # The scene must include at least one animated character object.  One of the characters must be a human-like character.
 # Other characters can be human or non-human character. More that one animated character is optional.
@@ -80,44 +64,84 @@ def init_light():
     glEnable(GL_LIGHT0)
 
 
-def draw_house():
+def draw_house(roof, wall, control):
 
-    draw_backwall2()
-    draw_frontwall()
-    draw_sidewall1()
-    draw_sidewall2()
-    draw_roofside1()
-    draw_roofside2()
-    draw_roofend1()
-    draw_roofend2()
-    draw_door()
+    draw_backwall2(wall)
+    draw_frontwall(wall)
+    draw_sidewall1(wall)
+    draw_sidewall2(wall)
+    draw_roofside1(roof)
+    draw_roofside2(roof)
+    draw_roofend1(roof)
+    draw_roofend2(roof)
+    if control:
+        draw_controlled_door()
+    else:
+        draw_door()
 
 
-def draw_backwall():
+def draw_backwall(color):
     glPushMatrix()
-    glColor3f(0.82, 0.7, 0.7)
+    glColor3fv(color)
     glRotatef(180, 0.0, 1.0, 0.0)
     glTranslatef(0.0, 0.0, -0.1)
     draw_frontwall()
     glPopMatrix()
 
 
-def draw_frontwall():
+def draw_frontwall(color):
     glPushMatrix()
-    glColor3f(0.82, 0.7, 0.2)
-    glBegin(GL_POLYGON)
-    glVertex3f(-1.0, 0.0, 0.0)
-    glVertex3f(1.0, 0.0, 0.0)
-    glVertex3f(1.0, 1.0, 0.0)
-    glVertex3f(-1.0, 1.0, 0.0)
+    glColor3fv(color)
+    glBegin(GL_QUADS)
+
+    glVertex3f(-1, 0 , 0)
+    glVertex3f(-1, 0.4, 0)
+    glVertex3f(-0.2, 0.4, 0)
+    glVertex3f(-0.2, 0, 0)
+
+    glVertex3f(-1, .4, 0)
+    glVertex3f(-1, 1, 0)
+    glVertex3f(-.4, 1, 0)
+    glVertex3f(-.4, .4, 0)
+
+    glVertex3f(-.4, .6, 0)
+    glVertex3f(-.4, 1, 0)
+    glVertex3f(-.2, 1, 0)
+    glVertex3f(-.2, .6, 0)
+
+    glVertex3f(-.2, .4, 0)
+    glVertex3f(0, .4, 0)
+    glVertex3f(0, 1, 0)
+    glVertex3f(-.2, 1, 0)
+
+    glVertex3f(0, 1, 0)
+    glVertex3f(1, 1, 0)
+    glVertex3f(1, .4, 0)
+    glVertex3f(0, .4, 0)
+
+    glVertex3f(0, 0, 0)
+    glVertex3f(.2, 0, 0)
+    glVertex3f(.2, .4, 0)
+    glVertex3f(0, .4, 0)
+
+    glVertex3f(.2, 0, 0)
+    glVertex3f(1, 0, 0)
+    glVertex3f(1, .2, 0)
+    glVertex3f(.2, .2, 0)
+
+    glVertex3f(.4, .4, 0)
+    glVertex3f(1, .4, 0)
+    glVertex3f(1, .2, 0)
+    glVertex3f(.4, .2, 0)
+
     glEnd()
     glPopMatrix()
 
 
-def draw_backwall2():
+def draw_backwall2(color):
 
     glPushMatrix()
-    glColor3f(0.82, 0.7, 0.55)
+    glColor3fv(color)
     glBegin(GL_QUADS)
     glVertex3f(-1.0, 0.0, -1.0)
     glVertex3f(1.0, 0.0, -1.0)
@@ -127,10 +151,10 @@ def draw_backwall2():
     glPopMatrix()
 
 
-def draw_sidewall1():
+def draw_sidewall1(color):
     glPushMatrix()
 
-    glColor3f(0.82, 0.7, 0.55)
+    glColor3fv(color)
     glBegin(GL_QUADS)
     glVertex3f(1.0, 0.0, 0.0)
     glVertex3f(1.0, 0.0, -1.0)
@@ -140,10 +164,10 @@ def draw_sidewall1():
     glPopMatrix()
 
 
-def draw_sidewall2():
+def draw_sidewall2(color):
     glPushMatrix()
 
-    glColor3f(0.82, 0.7, 0.55)
+    glColor3fv(color)
     glBegin(GL_QUADS)
     glVertex3f(-1.0, 0.0, -1.0)
     glVertex3f(-1.0, 0.0, 0.0)
@@ -153,10 +177,10 @@ def draw_sidewall2():
     glPopMatrix()
 
 
-def draw_roofside1():
+def draw_roofside1(color):
 
     glPushMatrix()
-    glColor3f(0.82, 0.4, 0.1)
+    glColor3fv(color)
     glBegin(GL_POLYGON)
     glVertex3f(-1.0, 1.0, 0.0)
     glVertex3f(1.0, 1.0, 0.0)
@@ -166,9 +190,9 @@ def draw_roofside1():
     glPopMatrix()
 
 
-def draw_roofside2():
+def draw_roofside2(color):
     glPushMatrix()
-    glColor3f(0.82, 0.4, 0.1)
+    glColor3fv(color)
     glBegin(GL_POLYGON)
     glVertex3f(1.0, 1.0, -1.0)
     glVertex3f(-1.0, 1.0, -1.0)
@@ -178,9 +202,9 @@ def draw_roofside2():
     glPopMatrix()
 
 
-def draw_roofend2():
+def draw_roofend2(color):
     glPushMatrix()
-    glColor3f(0.82, 0.4, 0.1)
+    glColor3fv(color)
     glBegin(GL_TRIANGLES)
     glVertex3f(-1.0, 1.0, 0.0)
     glVertex3f(-1.0, 1.5,-0.5)
@@ -189,9 +213,9 @@ def draw_roofend2():
     glPopMatrix()
 
 
-def draw_roofend1():
+def draw_roofend1(color):
     glPushMatrix()
-    glColor3f(0.82, 0.4, 0.1)
+    glColor3fv(color)
     glBegin(GL_TRIANGLES)
     glVertex3f(1.0, 1.0, 0.0)
     glVertex3f(1.0, 1.0, -1.0)
@@ -202,19 +226,23 @@ def draw_roofend1():
 
 def draw_rowofhouses():
     glPushMatrix()
-    for i in range(0, 5):
-        #draw_house()   #drawn at center, don't translate this one
-        glTranslatef(3.0, 0.0, 0.0)
-        draw_house()
+    glTranslatef(3.0, 0.0, 0.0)
+    draw_house((0.82, 0.7, 0.55), (0.82, 0.4, 0.1), False)
+    glTranslatef(3.0, 0.0, 0.0)
+    draw_house((0.365,0.247,0.827), (0.902,0.902,0.98), False)
+    glTranslatef(3.0, 0.0, 0.0)
+    draw_house((0.502,0.,0.125), (0.933,0.294,0.169),False)
+    glTranslatef(3.0, 0.0, 0.0)
+    draw_house((0.,0.639,0.424), (0.376,0.51,0.714),True)
     glPopMatrix()
 
 
 # draw the door, set rotation angle to a global variable to be toggled on keyboard
 # input need to add this to push
-def draw_door():
+def draw_controlled_door():
     global doorangle
     glPushMatrix()
-    glColor3f(0.5, 0.5, 0.5)
+    glColor3f(0.545, 0.412, 0.078)
     glRotatef(doorangle, 0 , 0.1, 0.0)
     glTranslatef(0.0, 0, 0.0)
     glBegin(GL_QUADS)
@@ -226,6 +254,20 @@ def draw_door():
     glEnd()
     glPopMatrix()
 
+
+def draw_door():
+    glPushMatrix()
+    glColor3f(0.545, 0.412, 0.078)
+    glRotatef(0, 0, 0.1, 0.0)
+    glTranslatef(0.0, 0, 0.0)
+    glBegin(GL_QUADS)
+
+    glVertex3f(-0.2, .4, 0.0)
+    glVertex3f(0, 0.4, 0.0)
+    glVertex3f(0, 0, 0.0)
+    glVertex3f(-0.2, 0, 0.0)
+    glEnd()
+    glPopMatrix()
 
 def draw_street():
     glPushMatrix()
