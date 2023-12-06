@@ -6,10 +6,6 @@ import pygame.image
 # visible street
 # some form of backgrounds (mountains, forest in the distance, cityscape, etc.)
 #
-# One structure should be different than a house, like, for example,  a barn with a rounded
-# roof or a dome (like an observatory), or a tower with with conical roof.
-#
-#
 # When night falls in the scene at least some
 # of the habitable structures must have interior lighting and this must be visible in the application. And the user must
 # be able to return the scene to daylight conditions
@@ -48,7 +44,7 @@ def init_light():
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, [0.2, 0.2, 0.2, 1])
     glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1])
-    glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 1])
+    glLightfv(GL_LIGHT0, GL_POSITION, [0, 10, 0, 1])
     glEnable(GL_LIGHT0)
 
 
@@ -355,18 +351,58 @@ def draw_sky():
     glPopMatrix()
 
 
+def draw_tower_layer(color):
+    glPushMatrix()
+
+    glBegin(GL_QUADS)
+    glColor3fv(color)
+    glVertex3f(0, 0 , 0)
+    glVertex3f(.5, 0, 0)
+    glVertex3f(.5, .5, 0)
+    glVertex3f(0, .5, 0)
+
+    glVertex3f(.5, 0, 0)
+    glVertex3f(.5, .5, 0)
+    glVertex3f(.5, .5, -.5)
+    glVertex3f(.5, 0, -.5)
+
+    glVertex3f(0, 0, -.5)
+    glVertex3f(.5, 0, -.5)
+    glVertex3f(.5, .5, -.5)
+    glVertex3f(0, .5, -.5)
+
+    glVertex3f(0, 0, 0)
+    glVertex3f(0, .5, 0)
+    glVertex3f(0, .5, -.5)
+    glVertex3f(0, 0, -.5)
+    glEnd()
+    glPopMatrix()
 
 def draw_tower():
     glPushMatrix()
-    glTranslate(15, 0, 0)
-    glBegin(GL_QUADS)
+    glTranslate(-8, 0, -.5)
     # let's try alternating layers of red and white for basic tower
-    # red
-    glColor3f(0.863,0.078,0.235)
-    #white
-    glColor3f(1, 1, 1)
-    glEnd()
+    draw_tower_layer((0.863, 0.078, 0.235))
+    glTranslate(0, .5, 0)
+    draw_tower_layer((1, 1, 1))
+    glTranslate(0, .5, 0)
+    draw_tower_layer((0.863, 0.078, 0.235))
+    glTranslate(0, .5, 0)
+    draw_tower_layer((1, 1, 1))
+    glTranslate(0, .5, 0)
+    draw_tower_layer((0.863, 0.078, 0.235))
+    glTranslate(0, .5, 0)
+    draw_tower_layer((1, 1, 1))
+    glTranslate(0, .5, 0)
+    draw_tower_layer((0.863, 0.078, 0.235))
+    glColor3f(0.212,0.271,0.31)
+    glRotatef(-90, 1, 0, 0)
+    glTranslate(0.25, 0.25 , .5)
+    glutSolidCone(.37, .7, 9, 3)
+    #glEnd()
     glPopMatrix()
+
+
 def display():
     global camerax, cameraz, lookx, lookz
     glEnable(GL_DEPTH_TEST)
@@ -377,7 +413,7 @@ def display():
     draw_ground()
     draw_tree()
     draw_sky()
-    # draw_tower()
+    draw_tower()
     glDepthFunc(GL_LESS)  # this is default
 
     glFlush()
@@ -427,14 +463,14 @@ def key_inputs(key, x, y):
             glDisable(GL_LIGHT0)
             glLightfv(GL_LIGHT1, GL_AMBIENT, [0.0, 0.0, 0.0, 1])
             glLightfv(GL_LIGHT1, GL_DIFFUSE, [0.0, 0.0, 0.0, 1])
-            glLightfv(GL_LIGHT1, GL_POSITION, [0, 2, 0, 1])
+            glLightfv(GL_LIGHT1, GL_POSITION, [0, 10, 0, 1])
             glEnable(GL_LIGHT1)
         else:
             sunstate = 1
             glDisable(GL_LIGHT1)
             glLightfv(GL_LIGHT0, GL_AMBIENT, [0.2, 0.2, 0.2, 1])
             glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1])
-            glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 1])
+            glLightfv(GL_LIGHT0, GL_POSITION, [0, 10, 0, 1])
             glEnable(GL_LIGHT0)
     glutPostRedisplay()
 
