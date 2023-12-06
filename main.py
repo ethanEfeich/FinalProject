@@ -6,25 +6,13 @@ import pygame.image
 # visible street
 # some form of backgrounds (mountains, forest in the distance, cityscape, etc.)
 #
-# The scene must contain at least four constructed structures (houses, buildings, towers, etc.).  Houses must have a
-# pitched roofs. Otherwise the shape of structures should be appropriate for the structure.  All houses must have a
-# front door and two windows. One structure should be different than a house, like, for example,  a barn with a rounded
-# roof or a dome (like an observatory), or a tower with with conical roof. The windows must be openings (not just black
-# polygons).   The viewer must be able to see inside some structures.
+# One structure should be different than a house, like, for example,  a barn with a rounded
+# roof or a dome (like an observatory), or a tower with with conical roof.
 #
-# The one dwelling structures (houses)  must have a door. On at least one house (or similar building) the user must be
-# able to toggle open and close the door
 #
 # When night falls in the scene at least some
 # of the habitable structures must have interior lighting and this must be visible in the application. And the user must
 # be able to return the scene to daylight conditions
-#
-#
-# The sides of the structures must be distinguishable. That is, they may be different colors or different shades of
-# colors, or you may apply textures to create this effect.
-#
-# The structures should not all be the same size. Although a collection of houses can be the same size but must vary in
-# other ways.
 #
 # The scene must include at least one animated character object.  One of the characters must be a human-like character.
 # Other characters can be human or non-human character. More that one animated character is optional.
@@ -182,10 +170,10 @@ def draw_roofside1(color):
     glPushMatrix()
     glColor3fv(color)
     glBegin(GL_POLYGON)
-    glVertex3f(-1.0, 1.0, 0.0)
-    glVertex3f(1.0, 1.0, 0.0)
-    glVertex3f(1.0, 1.5, -0.5)
-    glVertex3f(-1.0, 1.5, -0.5)
+    glVertex3f(-1.1, .9, 0.1)
+    glVertex3f(1.1, .9, 0.1)
+    glVertex3f(1.1, 1.5, -0.5)
+    glVertex3f(-1.1, 1.5, -0.5)
     glEnd()
     glPopMatrix()
 
@@ -194,10 +182,10 @@ def draw_roofside2(color):
     glPushMatrix()
     glColor3fv(color)
     glBegin(GL_POLYGON)
-    glVertex3f(1.0, 1.0, -1.0)
-    glVertex3f(-1.0, 1.0, -1.0)
-    glVertex3f(-1.0, 1.5, -0.5)
-    glVertex3f(1.0, 1.5, -0.5)
+    glVertex3f(1.1, .9, -1.1)
+    glVertex3f(-1.1, .9, -1.1)
+    glVertex3f(-1.1, 1.5, -0.5)
+    glVertex3f(1.1, 1.5, -0.5)
     glEnd()
     glPopMatrix()
 
