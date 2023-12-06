@@ -1,24 +1,4 @@
 # Ethan Eichelberger
-import pygame.image
-
-# Requirements
-# ground plane with appropriate ground texture, NOT A SINGLE FLAT COLOR, grass dirt etc
-# visible street
-# some form of backgrounds (mountains, forest in the distance, cityscape, etc.)
-#
-# When night falls in the scene at least some
-# of the habitable structures must have interior lighting and this must be visible in the application. And the user must
-# be able to return the scene to daylight conditions
-#
-# The scene must include at least one animated character object.  One of the characters must be a human-like character.
-# Other characters can be human or non-human character. More that one animated character is optional.
-#
-# he human-like character must initially, face a direction other than toward the camera, and, at some point,
-# turn toward the viewer (camera) and wave.
-#
-# The nonhuman character or object may be animated also, performing some actions (walking, running, eating grass,
-# chasing a ball, digging a hole, driving down the street, etc.)
-
 
 from OpenGL.GL import *
 from OpenGL.GLUT import *
@@ -52,6 +32,9 @@ def init_light():
     glLightfv(GL_LIGHT0, GL_POSITION, [0, 10, 0, 1])
     glEnable(GL_LIGHT0)
 
+    glLightfv(GL_LIGHT2, GL_AMBIENT, [0.2, 0.2, 0.2, 1])
+    glLightfv(GL_LIGHT2, GL_POSITION, [1.7, 10, -0.5, 1])
+    glEnable(GL_LIGHT2)
 
 def draw_house(roof, wall, control):
 
@@ -305,8 +288,25 @@ def draw_ground():
     glVertex3f(30, 0, -10)
     glVertex3f(20, 0, -10)
 
+    glVertex3f(10, 0.5, -10)
+    glVertex3f(20, 0.5, -10)
+    glVertex3f(20, 0, 0)
+    glVertex3f(10, 0, 0)
 
+    glEnd()
 
+    glBegin(GL_TRIANGLES)
+    glVertex3f(5, 3.5, -25)
+    glVertex3f(0, 0, -20)
+    glVertex3f(20, 0, -20)
+
+    glVertex3f(5, 3.5, -25)
+    glVertex3f(0, 0, -20)
+    glVertex3f(-10, 0, -20)
+
+    glVertex3f(-5, 4.5, -25)
+    glVertex3f(0, 0, -20)
+    glVertex3f(-20, 0, -20)
     # glTexCoord2f(1.0, 0.0)
     #glVertex3f()
     glEnd()
@@ -674,16 +674,16 @@ def key_inputs(key, x, y):
     global camerax, cameraz, lookx, lookz, doorangle, sunstate, humanstate, humanpath, bodyangle, armangle, secondpath
     ch = key.decode("utf-8")
     if ch == 'l':
-        if camerax < 10:
+        if camerax < 3:
             camerax += 1
     if ch == 'r':
-        if camerax > -10:
+        if camerax > -3:
             camerax -= 1
     if ch == "d":
-        if lookx < 10:
+        if lookx < 3:
             lookx +=1
     if ch == "a":
-        if lookx > -10:
+        if lookx > -4:
             lookx -=1
     if ch == 'u':
         cameraz -= 1
